@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  database:
+    container_name: ms_database
+    image: mongo:5.0.2
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ms_database
+      MONGO_INITDB_ROOT_PASSWORD: ms_database
+    volumes:
+      - mongo_volume:/data/db
+    networks:
+      - microservices_network
+  product_catalog:
+    container_name: product_catalog
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./product_catalog:/code
+    build:
+      context: product_catalog
+      dockerfile: ./Dockerfile
+    networks:
+      - microservices_network
+
+networks:
+  microservices_network:
+
+volumes:
+  mongo_volume:
